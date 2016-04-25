@@ -1,0 +1,65 @@
+1. Driver jars can be installed as regular deployments or configured as WildFly modules.
+
+2. To create a WildFly module, go to $WILDFLY_HOME\modules\system\layers\base.
+
+3. Create a directory tree  corresponding to database provider's classes packages/namespace (e.g  com/mysql for MySQL server, org/postgres for PostgreSQL and so on),
+   and a 'main' directory under directory tree where to place a) driver jars and b) module.xml file for configuration.
+ 
+4. Module.xml has the following structure:
+
+<module xmlns="urn:jboss:module:1.3" name="com.mysql"> <!-- 'name' must be unique and should reflect directory tree -->
+    <resources>
+    	  <!-- place here all required jars -->
+        <resource-root path="mysql-connector-java-5.1.38.jar"/> 
+    </resources>
+    <dependencies>
+    		<!-- These dependencies seems to be the same for any JDBC 4 compliant driver -->
+        <module name="javax.api"/>
+        <module name="javax.transaction.api"/>
+        <module name="javax.servlet.api" optional="true"/>
+    </dependencies>
+</module>
+
+
+5. Modify subsystem datasource entry in wildfly XML configuration file (standalone.xml, standalone-full.xml and so on), like the following:
+
+
+<subsystem xmlns="urn:jboss:domain:datasources:4.0">
+    <datasources>
+    		<!-- ...... -->
+        <!-- this entry is valid for MySql -->
+        <xa-datasource jndi-name="java:/MysqlXADS" pool-name="MysqlXADS" enabled="true" use-ccm="false">
+            <xa-datasource-property name="ServerName">
+                localhost
+            </xa-datasource-property>
+            <xa-datasource-property name="DatabaseName">     
+                targetDBName
+            </xa-datasource-property>
+            <driver>mysql</driver>
+            <xa-pool>
+                <min-pool-size>0</min-pool-size>
+                <initial-pool-size>1</initial-pool-size>
+                <max-pool-size>100</max-pool-size>
+                <prefill>true</prefill>
+                <flush-strategy>FailingConnectionOnly</flush-strategy>
+            </xa-pool>
+            <security>
+                <user-name>userid</user-name>
+                <password>pwd</password>
+            </security>
+            <validation>
+                <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLValidConnectionChecker"/>
+                <background-validation>true</background-validation>
+                <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLExceptionSorter"/>
+            </validation>
+        </xa-datasource>
+        <drivers>
+        		<!--  Here any other driver definitions -->
+        		<!-- ...... -->
+            <driver name="mysql" module="com.mysql">
+                <xa-datasource-class>com.mysql.jdbc.jdbc2.optional.MysqlXADataSource</xa-datasource-class>
+            </driver>
+        </drivers>
+    </datasources>
+</subsystem>
+
