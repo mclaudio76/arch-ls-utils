@@ -7,7 +7,7 @@ custom library in Eclipse.
 
 #Database-modules
 How to configure MySQL datasources in WildFly Application Server.
-Given instructions should be ok even for other JDBC 4 compliant drivers.
+Given instructions should work for other JDBC 4 compliant drivers as well.
 
 
 
