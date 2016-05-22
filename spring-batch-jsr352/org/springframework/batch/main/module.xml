@@ -1,0 +1,31 @@
+<module xmlns="urn:jboss:module:1.3" name="org.springframework.batch">
+    <resources>
+        <resource-root path="springconfig.jar"/>
+        <resource-root path="aopalliance-1.0.jar"/>
+        <resource-root path="com.ibm.jbatch-tck-spi-1.0.jar"/>
+        <resource-root path="javax.batch-api-1.0.jar"/>
+        <resource-root path="jettison-1.2.jar"/>
+        <resource-root path="spring-aop-4.0.5.RELEASE.jar"/>
+        <resource-root path="spring-batch-core-3.0.7.RELEASE.jar"/>
+        <resource-root path="spring-batch-infrastructure-3.0.7.RELEASE.jar"/>
+        <resource-root path="spring-beans-4.2.5.RELEASE.jar"/>
+        <resource-root path="spring-context-4.0.5.RELEASE.jar"/>
+        <resource-root path="spring-core-4.2.5.RELEASE.jar"/>
+        <resource-root path="spring-expression-4.0.5.RELEASE.jar"/>
+        <resource-root path="spring-jdbc-4.2.5.RELEASE.jar"/>
+        <resource-root path="spring-retry-1.1.0.RELEASE.jar"/>
+        <resource-root path="spring-tx-4.2.5.RELEASE.jar"/>
+        <resource-root path="xmlpull-1.1.3.1.jar"/>
+        <resource-root path="xpp3_min-1.1.4c.jar"/>
+        <resource-root path="xstream-1.4.7.jar"/>
+        <resource-root path="commons-dbcp-1.4.jar"/>
+        <resource-root path="commons-pool-1.5.4.jar"/>
+        <resource-root path="commons-logging-1.2.jar"/>
+        <resource-root path="hsqldb-2.3.3.jar"/>
+    </resources>
+    <dependencies>
+        <module name="javax.api"/>
+        <module name="javaee.api" />
+        <module name="com.mysql" />
+    </dependencies>
+</module>
