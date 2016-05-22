@@ -1,0 +1,37 @@
+Following instructions let you to use Spring Batch as JSR-352 default implementation in Wildfly, instead of JBeret implementation.
+
+a) Define a WildFly module, by downloading all Spring Batch required jars via maven, creating  under {WildFly-Inst}\modules\system\layers\base a subfolder
+structure (\org\springframework\batch\main)
+
+b) Create module.xml to define which jars need to be loaded and to define dependencies.
+
+c) Now, a tricky part. To use a persistent repository, one needs to override Spring Batch config files found in jar spring-batch-core-{version}.jar. To make it
+   quick and dirty, I removed all batch-* files and META-INF subdir from origina jar, and packaged a modified version of such files in another jar I named 
+   "springconfig.jar". Pretty sure that exist a better way to handle this..
+
+d) Create a regular WAR project to deploy a batch job. 
+
+e) Create a META-INF directory in the WAR project
+
+f) Copy jboss-deployment-structure.xml file in it.
+
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss-deployment-structure>
+    <deployment>
+        <exclusions>
+            <module name="org.wildfly.jberet"/>
+            <module name="org.jberet.jberet-core"/>
+        </exclusions>
+         <exclude-subsystems>
+            <subsystem name="batch-jberet"/> <!-- this is required to prevent WildFly to load two  JSRS-352 implementations->
+        </exclude-subsystems>
+        <dependencies>
+            <module name="org.springframework.batch" services="import" meta-inf="import"/>
+        </dependencies>
+    </deployment>
+</jboss-deployment-structure>
+
+
+Just for testing, I created a simple project with a servlet whose doGet method instantiates JobOperator via BatchRuntime and verifies how many job have been executed
+and how many jobs of a given type are running. Such jobs where launched as Java SE based spring jobs.
+
