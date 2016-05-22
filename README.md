@@ -11,7 +11,7 @@ Given instructions should work for other JDBC 4 compliant drivers as well.
 
 #Deploying and configuring Spring Batch as Wildfly module.
 How to configure Spring batch as Wildfly module and how to use Spring Batch as default JSR-352 implementation in WildFly.
-For code and a very good detailed explanation about how the whole thing works, have a look at https://github.com/radcortez/wildfly-spring-batch
+For code and a very good detailed explanation about how the whole thing works, have a look at https://github.com/radcortez/wildfly-spring-batch and related resources.
 
 
 
